@@ -1,0 +1,39 @@
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin: 50px 0 10px 0;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.keyboard-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d3d6da;
+  font-weight: bold;
+  width: 30px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.enter {
+  width: 60px;
+  font-size: 12px;
+}
+
+.backspace {
+  width: 40px;
+}
+
+.backspace img {
+  width: 20px;
+}
