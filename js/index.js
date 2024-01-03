@@ -15,6 +15,7 @@ function appStart() {
 
   const gameover = () => {
     window.removeEventListener("keydown", handleEnterKey);
+    // window.removeEventListener("click", handleMousedown);
     displayGameover();
     clearInterval(timer);
   };
@@ -32,14 +33,27 @@ function appStart() {
       const block = document.querySelector(
         `.board-block[data-index='${attempts}${i}']`
       );
+
       const 입력한_글자 = block.innerText;
       const 정답_글자 = 정답[i];
+
+      const keyblock = document.querySelector(
+        `.keyboard-block[data-key='${입력한_글자}']`
+      );
+
       if (입력한_글자 === 정답_글자) {
         맞은_갯수 += 1;
         block.style.background = "#6AAA64";
-      } else if (정답.includes(입력한_글자)) block.style.background = "#C9B458";
-      else block.style.background = "#787C7E";
+        keyblock.style.background = "#6AAA64";
+      } else if (정답.includes(입력한_글자)) {
+        block.style.background = "#C9B458";
+        keyblock.style.background = "#C9B458";
+      } else {
+        block.style.background = "#787C7E";
+        keyblock.style.background = "#787C7E";
+      }
       block.style.color = "white";
+      keyblock.style.color = "white";
     }
 
     if (맞은_갯수 === 5) gameover();
@@ -88,8 +102,30 @@ function appStart() {
     timer = setInterval(setTime, 1000);
   };
 
+  const handleMousedown = (event) => {
+    const keyboard = event.target;
+    const keyboardData = event.target.dataset.key;
+
+    console.log(keyboard);
+    console.log(keyboardData);
+
+    const thisBlock = document.querySelector(
+      `.board-block[data-index='${attempts}${index}']`
+    );
+
+    if (keyboard.innerText === "") handleBackspace();
+    else if (index === 5) {
+      if (keyboardData === "ENTER") handleEnterKey();
+      else return;
+    } else {
+      thisBlock.innerText = keyboardData;
+      index += 1;
+    }
+  };
+
   startTimer();
   window.addEventListener("keydown", handleKeydown);
+  window.addEventListener("click", handleMousedown);
 }
 
 appStart();
