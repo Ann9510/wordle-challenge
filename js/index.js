@@ -2,10 +2,21 @@ const 정답 = "APPLE";
 
 let index = 0;
 let attempts = 0;
+let timer;
 
 function appStart() {
+  const displayGameover = () => {
+    const div = document.createElement("div");
+    div.innerText = "게임이 종료됐습니다.";
+    div.style =
+      "display:flex; justify-content:center; align-items:center; position:absolute; top:40vh; left:30vw; background-color:white; width:200px; height:100px;";
+    document.body.appendChild(div);
+  };
+
   const gameover = () => {
     window.removeEventListener("keydown", handleEnterKey);
+    displayGameover();
+    clearInterval(timer);
   };
 
   const nextLine = () => {
@@ -35,6 +46,16 @@ function appStart() {
     else nextLine();
   };
 
+  const handleBackspace = () => {
+    if (index > 0) {
+      const preBlock = document.querySelector(
+        `.board-block[data-index='${attempts}${index - 1}']`
+      );
+      preBlock.innerText = "";
+    }
+    if (index !== 0) index -= 1;
+  };
+
   const handleKeydown = (event) => {
     const key = event.key.toUpperCase();
     const keyCode = event.keyCode;
@@ -42,7 +63,8 @@ function appStart() {
       `.board-block[data-index='${attempts}${index}']`
     );
 
-    if (index === 5) {
+    if (event.key === "Backspace") handleBackspace();
+    else if (index === 5) {
       if (event.key === "Enter") handleEnterKey();
       else return;
     } else if (65 <= keyCode && keyCode <= 90) {
@@ -51,6 +73,22 @@ function appStart() {
     }
   };
 
+  const startTimer = () => {
+    const startTime = new Date();
+
+    function setTime() {
+      const now = new Date();
+      const later = new Date(now - startTime);
+      const minutes = later.getMinutes().toString().padStart(2, "0");
+      const seconds = later.getSeconds().toString().padStart(2, "0");
+      const timeDiv = document.querySelector("#timer");
+      timeDiv.innerText = `${minutes}:${seconds}`;
+    }
+
+    timer = setInterval(setTime, 1000);
+  };
+
+  startTimer();
   window.addEventListener("keydown", handleKeydown);
 }
 
