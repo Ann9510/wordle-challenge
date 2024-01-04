@@ -8,7 +8,7 @@ function appStart() {
   const displayGameover = () => {
     const div = document.createElement("div");
     div.style =
-      "display:flex; justify-content:center; align-items:center; position:absolute; top:40vh; left:30vw; background-color:white; width:200px; height:100px; font-weight:bold; font-size:20px ";
+      "display:flex; justify-content:center; align-items:center; position:absolute; top:20vh; left:40vw; background-color:white; width:200px; height:100px; font-weight:bold; font-size:20px ";
     if (attempts === 6) {
       div.innerText = "GameOver";
     } else {
