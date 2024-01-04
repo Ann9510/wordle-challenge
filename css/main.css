@@ -23,3 +23,18 @@ main {
   font-size: 20px;
   font-weight: bold;
 }
+
+@keyframes moving {
+  0% {
+    margin-left: 0px;
+  }
+  30% {
+    margin-left: 30px;
+  }
+  70% {
+    margin-left: -30px;
+  }
+  100% {
+    margin-left: 0px;
+  }
+}

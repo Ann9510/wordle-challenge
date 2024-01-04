@@ -7,23 +7,27 @@ let timer;
 function appStart() {
   const displayGameover = () => {
     const div = document.createElement("div");
-    div.innerText = "게임이 종료됐습니다.";
     div.style =
-      "display:flex; justify-content:center; align-items:center; position:absolute; top:40vh; left:30vw; background-color:white; width:200px; height:100px;";
+      "display:flex; justify-content:center; align-items:center; position:absolute; top:40vh; left:30vw; background-color:white; width:200px; height:100px; font-weight:bold; font-size:20px ";
+    if (attempts === 6) {
+      div.innerText = "GameOver";
+    } else {
+      div.innerText = "정답! 축하합니다";
+    }
     document.body.appendChild(div);
   };
 
-  const gameover = () => {
-    window.removeEventListener("keydown", handleEnterKey);
-    // window.removeEventListener("click", handleMousedown);
-    displayGameover();
-    clearInterval(timer);
-  };
-
   const nextLine = () => {
-    if (attempts === 6) return gameover();
     attempts += 1;
     index = 0;
+    if (attempts === 6) gameover();
+  };
+
+  const gameover = () => {
+    window.removeEventListener("keydown", handleKeydown);
+    window.removeEventListener("click", handleMousedown);
+    displayGameover();
+    clearInterval(timer);
   };
 
   const handleEnterKey = () => {
@@ -56,8 +60,15 @@ function appStart() {
       keyblock.style.color = "white";
     }
 
+    const row = document.querySelector(`.row-${attempts}`);
+    console.log(row);
+
     if (맞은_갯수 === 5) gameover();
-    else nextLine();
+    else {
+      row.style =
+        "animation-name: moving; animation-duration: 0.8s; animation-timing-function:ease-in-out;";
+      nextLine();
+    }
   };
 
   const handleBackspace = () => {
@@ -105,21 +116,21 @@ function appStart() {
   const handleMousedown = (event) => {
     const keyboard = event.target;
     const keyboardData = event.target.dataset.key;
-
-    console.log(keyboard);
-    console.log(keyboardData);
+    const img = event.srcElement.alt;
 
     const thisBlock = document.querySelector(
       `.board-block[data-index='${attempts}${index}']`
     );
 
-    if (keyboard.innerText === "") handleBackspace();
-    else if (index === 5) {
-      if (keyboardData === "ENTER") handleEnterKey();
-      else return;
-    } else {
-      thisBlock.innerText = keyboardData;
-      index += 1;
+    if (keyboard.classList.contains("keyboard-block")) {
+      if (keyboardData === "BACK") handleBackspace();
+      else if (index === 5) {
+        if (keyboardData === "ENTER") handleEnterKey();
+        else return;
+      } else if (keyboardData !== "ENTER") {
+        thisBlock.innerText = keyboardData;
+        index += 1;
+      }
     }
   };
 
